@@ -34,9 +34,10 @@ def main(
     print(vis(w_student, w_teacher, step=0, loss=jnp.inf))
     
     for step in range(1, num_steps+1):
-        grad_fnc = jax.value_and_grad(loss)
-        l, g = grad_fnc(w_student, w_teacher)
-        w_student = w_student - learning_rate * g
+        grad_fnc = jax.value_and_grad(loss, argnums=[0,1])
+        l, (g_student, g_teacher) = grad_fnc(w_student, w_teacher)
+        w_student = w_student - learning_rate * g_student
+        w_teacher = w_teacher - learning_rate * g_teacher
         plot = vis(w_student, w_teacher, step=step, loss=l)
         print(f"\x1b[{plot.height}A{plot}")
 
