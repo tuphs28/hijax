@@ -67,7 +67,7 @@ def main(
 
     # define the perceptron
     key_model_init, key = jax.random.split(key)
-    w = jax.random.normal(key_model_init, shape=(3,))
+    w = jax.random.normal(key_model_init, shape=(9,))
     print(vis_model(w, xs, step=0))
    
     # training loop
@@ -91,12 +91,16 @@ def loss(
 
 
 def forward(
-        w: Float[Array, "3"],
+        w: Float[Array, "6"],
         x: Float[Array, "2"]
     ) -> float:
-    a = w[:2]
-    b = w[2]
-    return jnp.dot(x, a) + b
+    a1 = w[:2]
+    b1 = w[2]
+    a2 = w[3]
+    b2 = w[4]
+
+    h1 = jax.nn.sigmoid(jnp.dot(x,a1) + b1)
+    return h1 * a2 + b2
 
 
 # # # 
